@@ -1,0 +1,7 @@
+EXPERIMENTS WITH BROWSER LOCALSTORAGE
+
+Me, fooling around with localStorage.
+
+The idea was top have a slim wrapper around localStorage that will keep track of the keys in use as well as the updated and creation time of keys.
+
+It might turn out to be a pointless product, but the journey is more important that the destination.
