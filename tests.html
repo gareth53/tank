@@ -1,0 +1,153 @@
+<!DOCTYPE html>  
+<html>  
+  <head>
+    <link rel="stylesheet" href="qunit.css"></link> 
+    <script src="http://code.jquery.com/jquery-latest.js"></script>  
+    <script type="text/javascript" src="quint/qunit.js"></script>  
+
+    <script type="text/javascript" src="quint/tank.js"></script>  
+
+    <script type="text/javascript">  
+
+	$(document).ready(function(){  
+	  module("testing TANK");  
+	  test("setItem", function()  
+	  {  
+		var key = 'test_val1',
+			val = "1234";
+
+		TANK.setItem(key, val);
+		var storedVal = window.localStorage.getItem(key) 
+
+	    equal(val, storedVal, "TANK.setItem hasn't set value correctly");  
+		window.localStorage.clear();
+	  });
+
+	  test("getItem", function()  
+	  {  
+		var key = 'test_val2',
+			val = "4321";
+
+		var storedVal = window.localStorage.setItem(key, val) 
+		var TANKval = TANK.getItem(key);
+
+	    equal(TANKval, val, "TANK.getItem hasn't retrieved value correctly");  
+
+		// now test setting a default value
+		var TANKval = TANK.getItem(key, "default");
+	    equal(TANKval, val, "TANK.getItem hasn't retrieved value correctly");  
+
+		var TANKval = TANK.getItem('non existenet key', "default");
+	    equal(TANKval, "default", "TANK.getItem hasn't returned the default value correctly");  
+
+		window.localStorage.clear();
+
+	  });
+
+	  test("getItems", function()  
+	  {  
+		var key = 'test_val1',
+			val = "4321",
+			key2 = 'test_val2',
+			val2 = "xxxx",
+			key3 = 'test_val3',
+			val3 = "nomnomnom";
+
+
+		window.localStorage.setItem(key, val);
+		window.localStorage.setItem(key2, val2);
+		window.localStorage.setItem(key3, val3);
+		
+		var TANKval = TANK.getItems(key, key2, key3);
+	    equal(TANKval[key], val, "TANK.getItems hasn't retrieved value correctly");  
+	    equal(TANKval[key2], val2, "TANK.getItems hasn't retrieved value correctly");  
+	    equal(TANKval[key3], val3, "TANK.getItems hasn't retrieved value correctly");  
+
+		window.localStorage.clear();
+
+	  });
+
+	  test("getAllItems", function()  
+	  {  
+		var key = 'test_val1',
+			val = "4321",
+			key2 = 'test_val2',
+			val2 = "xxxx",
+			key3 = 'test_val3',
+			val3 = "nomnomnom",
+			key4 = 'test_val4',
+			val4 = "how are you? good?";
+
+		// getALlItmes relies on TANK.setItem having been used
+		TANK.setItem(key, val);
+		TANK.setItem(key2, val2);
+		TANK.setItem(key3, val3);
+		TANK.setItem(key4, val4);
+		
+
+		var TANKval = TANK.getAllItems();
+	    equal(TANKval[key], val, "TANK.getAllItems hasn't retrieved correctly");  
+	    equal(TANKval[key2], val2, "TANK.getAllItems hasn't retrieved correctly");  
+	    equal(TANKval[key3], val3, "TANK.getAllItems hasn't retrieved correctly");  
+	    equal(TANKval[key4], val4, "TANK.getAllItems hasn't retrieved correctly");  
+
+		window.localStorage.removeItem(key4);
+		var TANKval = TANK.getAllItems();
+	    equal(TANKval[key4], null, "TANK.getAllItems hasn't retrieved correctly");  
+
+		window.localStorage.clear();
+
+	  });
+
+	  test("getKeys", function()  
+	  {  
+		var key = 'test_val1',
+			val = "4321",
+			key2 = 'test_val2',
+			val2 = "xxxx",
+			key3 = 'test_val3',
+			val3 = "nomnomnom",
+			key4 = 'test_val4',
+			val4 = "how are you? good?";
+
+		// getALlItmes relies on TANK.setItem having been used
+		TANK.setItem(key, val);
+		TANK.setItem(key2, val2);
+		TANK.setItem(key3, val3);
+		TANK.setItem(key4, val4);
+
+		var TANKkeys = TANK.getKeys();
+
+		equal(typeof TANKkeys, 'object', "TANK.getKeys hasn't returned an object");  
+		equal(TANKkeys.length, 4, "TANK.getKeys hasn't returned an array of the correct length");
+
+		equal(TANKkeys[0], key, "TANK.getKeys hasn't returned array in the correct order");
+		equal(TANKkeys[1], key2, "TANK.getKeys hasn't returned array in the correct order");
+		equal(TANKkeys[2], key3, "TANK.getKeys hasn't returned array in the correct order");
+		equal(TANKkeys[3], key4, "TANK.getKeys hasn't returned array in the correct order");
+	});
+
+});
+
+/*
+TODO:
+TEST THESE METHODS:
+
+	removeItem
+	clear
+	getKeys
+
+TEST USING RESERVED WORDS AS KEYS
+
+*/
+
+    </script>  
+  </head>  
+  <body>  
+    <h1 id="qunit-header">QUnit test coverage for TANK</h1>  
+    <h2 id="qunit-banner"></h2>  
+    <h2 id="qunit-userAgent"></h2>  
+    <ol id="qunit-tests">  
+    </ol>  
+  </body>  
+</html>

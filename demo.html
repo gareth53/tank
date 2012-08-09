@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>TANK - my localStorage library</title>
+<script src='tank.js'></script>
+<script>
+
+
+
+store = {	
+	save: function() {
+		var key = document.getElementById('key').value,
+		    val = document.getElementById('value').value;
+		if (key && val) TANK.setItem(key, val);
+		// reset the form
+		document.getElementById('key').value = '';
+		document.getElementById('value').value = '';
+		store.load();
+	},
+
+	load: function () {
+		var keys = TANK.getKeys();
+			len = keys.length;
+		//clear existing data
+		document.getElementById('loadedData').innerHTML = "";
+		for (var i=0 ; i<len; i++) {
+			document.getElementById('loadedData').innerHTML += keys[i] + " = " + TANK.getItem(keys[i]) +"\n"
+		}
+	},
+
+	load_key: function() {
+		var key = document.getElementById('keyload').value;
+		if (key) document.getElementById('keyloaded').value = TANK.getItem(key);
+	}
+};
+
+window.addEventListener('load', function() {
+	document.getElementById('localStore').addEventListener('submit', function(e) {
+		store.save();
+		e.preventDefault();
+	});
+	document.getElementById('readStore').addEventListener('submit', function(e) {
+// TODO: JUST ADD THIS LOAD FUNCTION TO AN EVENTLISTENER THAT UPDATES WHEN LOCALSTORAGE UPDATES
+// then we can remnove the submit button on the form :)
+		store.load();
+		e.preventDefault();
+	});	
+	document.getElementById('readVar').addEventListener('submit', function(e) {
+		store.load_key();
+		e.preventDefault();
+	});
+
+});
+
+</script>
+<style>
+h2 {
+	margin-top:0;
+}
+fieldset {
+	padding:0;
+	margin:0;
+	border:none;
+}
+input[type=submit] {
+	display:block;
+}
+div.form {
+	padding:10px;
+	border:1px solid #ccc;
+	float:left;
+	margin:0 10px 10px 0;
+	min-width:250px;
+	min-height:250px;
+}
+div.form textarea {
+	width:250px;
+	height:180px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>localStorage Demo</h1>
+
+<div class="form">
+	<h2>Save Data</h2>
+	<form id="localStore" method="post" submit="/">
+		<fieldset>
+			<div>
+				<label for="key">Key</label>
+				<input type="text" id="key">
+			</div>
+			<div>
+				<label for="key">Value</label>
+				<input type="text" id="value">	
+			</div>
+			<input type="submit" value="save">		
+		</fieldset>
+	</form>
+</div>
+<div class="form">
+
+	<h2>All Data</h2>
+	<form id="readStore" method="post" submit="/">
+		<fieldset>
+			<textarea id="loadedData" rows="20" cols="75"></textarea>
+			<input type="submit" value="load">
+		</fieldset>
+	</form>
+</div>
+<div class="form">
+	<h2>Read A Key value</h2>
+	<form id="readVar" method="post" submit="/">
+		<fieldset>
+			<div>
+				<label for="keyload">Key</label>
+				<input type="text" id="keyload">
+			</div>
+			<div>
+				<label for="keyloaded">Value</label>			
+				<input type="text" id="keyloaded">
+			</div>
+			<input type="submit" value="read">
+		</fieldset>
+	</form>
+</div>
+<div class="form">
+	<h2>Remove A Key</h2>
+	<form id="readVar" method="post" submit="/">
+		<fieldset>
+			<div>
+				<label for="keyload">Key</label>
+				<input type="text" id="keyload">
+			</div>
+			<input type="submit" value="remove">
+		</fieldset>
+	</form>
+</div>
+<div class="form">
+	<h2>Clear All Data</h2>
+	<form id="clearAll" method="post" submit="/">
+		<input type="submit" value="Clear">
+	</fieldset>
+	</form>
+</div>
+
+
+</body>
+</html>
